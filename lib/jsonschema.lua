@@ -1007,6 +1007,8 @@ generate_validator = function(ctx, schema)
         ctx:stmt(sformat('  %s == %q', ctx:param(1), val), op)
       elseif tval == 'table' then
         ctx:stmt(sformat('  %s(%s, %s)', ctx:libfunc('lib.deepeq'), ctx:param(1), ctx:uservalue(val)), op)
+      elseif val == default_null then
+        ctx:stmt(sformat('  %s == %s', ctx:param(1), ctx:libfunc('custom.null')))
       else
         error('unsupported enum type: ' .. tval) -- TODO: null
       end
